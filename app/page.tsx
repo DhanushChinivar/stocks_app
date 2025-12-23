@@ -1,13 +1,9 @@
-import {Button} from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 
+const Home = () => (
+    <div className="flex justify-center items-center h-screen">
+        <Button>Click me</Button>
+    </div>
+);
 
-const Home:() => Element = () =>{
-{
-    return (
-        <div className="flex justify-center items-center h-screen">
-        <Button> click me </Button>
-        </div>
-
-    )
-}
-export default Home
+export default Home;
