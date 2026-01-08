@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import WatchlistButton from "@/components/WatchlistButton";
+import { getChangeColorClass } from "@/lib/utils";
 
 const formatDate = (value: Date | string) => {
     const date = value instanceof Date ? value : new Date(value);
@@ -57,6 +58,8 @@ const WatchlistList = ({ initialItems }: { initialItems: StockWithData[] }) => {
                     <tr>
                         <th className="table-header py-3 text-left">Symbol</th>
                         <th className="table-header py-3 text-left">Company</th>
+                        <th className="table-header py-3 text-left">Price</th>
+                        <th className="table-header py-3 text-left">Change</th>
                         <th className="table-header py-3 text-left">Added</th>
                         <th className="table-header py-3 text-right pr-4">Actions</th>
                     </tr>
@@ -70,6 +73,10 @@ const WatchlistList = ({ initialItems }: { initialItems: StockWithData[] }) => {
                                 </Link>
                             </td>
                             <td className="table-cell py-4">{item.company}</td>
+                            <td className="table-cell py-4">{item.priceFormatted || "—"}</td>
+                            <td className={`table-cell py-4 ${getChangeColorClass(item.changePercent)}`}>
+                                {item.changeFormatted || "—"}
+                            </td>
                             <td className="table-cell py-4">{formatDate(item.addedAt)}</td>
                             <td className="table-cell py-4 pr-4">
                                 <div className="w-48 ml-auto">

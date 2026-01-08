@@ -178,3 +178,39 @@ export const searchStocks = cache(async (query?: string): Promise<StockWithWatch
         return [];
     }
 });
+
+export async function getQuotesForSymbols(symbols: string[]): Promise<Record<string, QuoteData>> {
+    const token = process.env.FINNHUB_API_KEY ?? NEXT_PUBLIC_FINNHUB_API_KEY;
+    if (!token) {
+        console.error('Error in quote fetch:', new Error('FINNHUB API key is not configured'));
+        return {};
+    }
+
+    const cleanSymbols = Array.from(
+        new Set(
+            (symbols || [])
+                .map((s) => s?.trim().toUpperCase())
+                .filter((s): s is string => Boolean(s))
+        )
+    );
+
+    if (cleanSymbols.length === 0) return {};
+
+    const pairs = await Promise.all(
+        cleanSymbols.map(async (symbol) => {
+            try {
+                const url = `${FINNHUB_BASE_URL}/quote?symbol=${encodeURIComponent(symbol)}&token=${token}`;
+                const quote = await fetchJSON<QuoteData>(url, 60);
+                return [symbol, quote] as const;
+            } catch (e) {
+                console.error('Error fetching quote for', symbol, e);
+                return [symbol, {} as QuoteData] as const;
+            }
+        })
+    );
+
+    return pairs.reduce<Record<string, QuoteData>>((acc, [symbol, quote]) => {
+        acc[symbol] = quote;
+        return acc;
+    }, {});
+}
