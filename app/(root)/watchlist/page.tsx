@@ -6,6 +6,8 @@ import { getNews, getQuotesForSymbols } from "@/lib/actions/finnhub.actions";
 import { getAlertsForUser } from "@/lib/actions/alert.actions";
 import { formatChangePercent, formatPrice } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 const WatchlistPage = async () => {
     const items = await getWatchlistItemsForUser();
     const alerts = await getAlertsForUser();
