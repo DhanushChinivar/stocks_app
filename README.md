@@ -2,6 +2,18 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+## Environment Setup
+
+1. Create a `.env` file based on `.env.example`.
+2. Set `MONGODB_URI` to your MongoDB Atlas connection string.
+3. Fill in the remaining env vars as needed for auth, email, Finnhub, and Gemini.
+
+### MongoDB Atlas Notes
+
+- If your Atlas cluster is paused, go to Atlas → Project `Rallify` → Cluster `Cluster0` and click `Resume`.
+- After resuming, ensure `Network Access` allows your current IP, and your `Database Access` user has the correct permissions.
+- You can validate the connection with `npm run test:db`.
+
 First, run the development server:
 
 ```bash
