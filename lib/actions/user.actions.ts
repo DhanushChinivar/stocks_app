@@ -1,17 +1,15 @@
 'use server';
 
-import {connectToDatabase} from "@/database/mongoose";
+import { connectToDatabase } from "@/database/mongoose";
+import { User } from "@/database/models/user.model";
 
 export const getAllUsersForNewsEmail = async () => {
     try {
-        const mongoose = await connectToDatabase();
-        const db = mongoose.connection.db;
-        if(!db) throw new Error('Mongoose connection not connected');
-
-        const users = await db.collection('user').find(
-            { email: { $exists: true, $ne: null }},
-            { projection: { _id: 1, id: 1, email: 1, name: 1, country:1 }}
-        ).toArray();
+        await connectToDatabase();
+        const users = await User.find(
+            { email: { $exists: true, $ne: null } },
+            { _id: 1, id: 1, email: 1, name: 1, country: 1 }
+        ).lean();
 
         return users.filter((user) =>user.email && user.name).map((user) => ({
             id: user.id || user._id?.toString() || '',
