@@ -1,48 +1,158 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+
+  <div>
+    <img src="https://img.shields.io/badge/-Next.js-black?style=for-the-badge&logoColor=white&logo=next.js&color=black"/>
+    <img src="https://img.shields.io/badge/-Better Auth-black?style=for-the-badge&logoColor=white&logo=betterauth&color=black"/>
+    <img src="https://img.shields.io/badge/-Shadcn-black?style=for-the-badge&logoColor=white&logo=shadcnui&color=black"/>
+    <img src="https://img.shields.io/badge/-Inngest-black?style=for-the-badge&logoColor=white&logo=inngest&color=black"/><br/>
+    <img src="https://img.shields.io/badge/-MongoDB-black?style=for-the-badge&logoColor=white&logo=mongodb&color=00A35C"/>
+    <img src="https://img.shields.io/badge/-TailwindCSS-black?style=for-the-badge&logoColor=white&logo=tailwindcss&color=38B2AC"/>
+    <img src="https://img.shields.io/badge/-TypeScript-black?style=for-the-badge&logoColor=white&logo=typescript&color=3178C6"/>
+  </div>
+
+  <h1 align="center">Rallify</h1>
+  <p align="center">A real-time stock market platform with AI-powered insights, smart alerts, and event-driven automation.</p>
+
+  <p align="center">
+    <a href="http://localhost:3000">View Demo</a> ·
+    <a href="https://github.com/yourusername/rallify/issues">Report Bug</a> ·
+    <a href="https://github.com/yourusername/rallify/issues">Request Feature</a>
+  </p>
+
+</div>
+
+---
+
+## About the Project
+
+Rallify is a full-stack financial platform I built to combine real-time market data with AI-driven analysis and automated workflows. Users can monitor stocks, receive intelligent price alerts, and get personalized daily digests — all powered by an event-driven backend.
+
+The project was an opportunity to work with several technologies I wanted to go deep on: Inngest for background job orchestration, Better Auth for modern authentication patterns, and the Gemini API for generating contextual market summaries.
+
+### Key highlights:
+- Event-driven architecture using Inngest for reliable background processing
+- Real-time stock data via Finnhub WebSocket and REST APIs
+- AI-generated market summaries and sentiment analysis via Gemini
+- Role-based access with an admin dashboard for content and user management
+- Transactional email notifications via Nodemailer
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Auth | Better Auth |
+| Database | MongoDB |
+| Styling | TailwindCSS + Shadcn UI |
+| Background Jobs | Inngest |
+| Market Data | Finnhub API |
+| AI | Google Gemini |
+| Email | Nodemailer |
+
+---
+
+## Features
+
+- **Real-Time Stock Dashboard** — Interactive line and candlestick charts with historical data. Filter stocks by industry, performance, or market cap.
+- **Smart Alerts** — Set custom thresholds for price changes or volume spikes and receive instant email notifications.
+- **Watchlist Management** — Build and manage a personalized stock watchlist.
+- **Company Insights** — Deep-dive into PE ratio, EPS, revenue trends, analyst ratings, filings, news, and sentiment scores.
+- **AI Summaries** — Daily market digests and earnings report breakdowns generated with Gemini.
+- **Admin Dashboard** — Manage stocks, publish financial news, and monitor user activity.
+- **Automated Workflows** — Inngest-powered pipelines handle price monitoring, alert scheduling, and digest delivery.
+
+---
 
 ## Getting Started
 
-## Environment Setup
+### Prerequisites
 
-1. Create a `.env` file based on `.env.example`.
-2. Set `MONGODB_URI` to your MongoDB Atlas connection string.
-3. Fill in the remaining env vars as needed for auth, email, Finnhub, and Gemini.
+- [Node.js](https://nodejs.org/en) (v18+)
+- [npm](https://www.npmjs.com/)
+- [Git](https://git-scm.com/)
 
-### MongoDB Atlas Notes
-
-- If your Atlas cluster is paused, go to Atlas → Project `Rallify` → Cluster `Cluster0` and click `Resume`.
-- After resuming, ensure `Network Access` allows your current IP, and your `Database Access` user has the correct permissions.
-- You can validate the connection with `npm run test:db`.
-
-First, run the development server:
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone the repo
+git clone https://github.com/yourusername/rallify.git
+cd rallify
+
+# Install dependencies
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env` file in the project root:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NODE_ENV='development'
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
-## Learn More
+# Finnhub
+NEXT_PUBLIC_NEXT_PUBLIC_FINNHUB_API_KEY=
+FINNHUB_BASE_URL=https://finnhub.io/api/v1
 
-To learn more about Next.js, take a look at the following resources:
+# MongoDB
+MONGODB_URI=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Better Auth
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Gemini
+GEMINI_API_KEY=
 
-## Deploy on Vercel
+# Nodemailer
+NODEMAILER_EMAIL=
+NODEMAILER_PASSWORD=
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+You'll need accounts at:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) — database
+- [Finnhub](https://finnhub.io) — market data API
+- [Google AI Studio](https://aistudio.google.com/) — Gemini API key
+- [Inngest](https://www.inngest.com/) — background job dashboard
+
+### Running Locally
+
+```bash
+# Start the Next.js dev server
+npm run dev
+
+# In a separate terminal, start the Inngest dev server
+npx inngest-cli@latest dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to use the app.
+
+---
+
+## Project Structure
+
+```
+rallify/
+├── app/                  # Next.js App Router pages and layouts
+├── components/           # Reusable UI components
+├── lib/                  # Utility functions and API clients
+├── inngest/              # Inngest event functions and workflows
+├── models/               # MongoDB schemas
+└── public/               # Static assets
+```
+
+---
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## Contact
+
+Your Name — Dhanush Chinivar (mailto:dhanushchinivar@gmail.com) · [LinkedIn](https://www.linkedin.com/in/dhanush-chinivar/) · 
