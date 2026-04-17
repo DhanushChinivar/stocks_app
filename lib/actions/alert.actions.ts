@@ -51,6 +51,10 @@ export async function createAlert(data: AlertData) {
             return { success: false, error: "Invalid alert data" };
         }
 
+        if (!['upper', 'lower'].includes(data.alertType)) {
+            return { success: false, error: "Invalid alert type" };
+        }
+
         await connectToDatabase();
         const created = await AlertModel.create({
             userId: user.id,

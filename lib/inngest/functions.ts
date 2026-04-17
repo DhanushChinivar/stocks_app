@@ -1,4 +1,6 @@
 import {inngest} from "@/lib/inngest/client";
+
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
 import {NEWS_SUMMARY_EMAIL_PROMPT, PERSONALIZED_WELCOME_EMAIL_PROMPT} from "@/lib/inngest/prompts";
 import {sendNewsSummaryEmail, sendWelcomeEmail} from "@/lib/nodemailer";
 import {getAllUsersForNewsEmail} from "@/lib/actions/user.actions";
@@ -21,7 +23,7 @@ export const sendSignUpEmail = inngest.createFunction(
         const prompt = PERSONALIZED_WELCOME_EMAIL_PROMPT.replace('{{userProfile}}', userProfile)
 
         const response = await step.ai.infer('generate-welcome-intro', {
-            model: step.ai.models.gemini({ model: 'gemini-2.5-flash-lite' }),
+            model: step.ai.models.gemini({ model: GEMINI_MODEL }),
             body: {
                 contents: [
                     {
@@ -91,7 +93,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
                 const prompt = NEWS_SUMMARY_EMAIL_PROMPT.replace('{{newsData}}', JSON.stringify(articles, null, 2));
 
                 const response = await step.ai.infer(`summarize-news-${user.email}`, {
-                    model: step.ai.models.gemini({ model: 'gemini-2.5-flash-lite' }),
+                    model: step.ai.models.gemini({ model: GEMINI_MODEL }),
                     body: {
                         contents: [{ role: 'user', parts: [{ text:prompt }]}]
                     }
