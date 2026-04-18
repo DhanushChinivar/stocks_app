@@ -14,27 +14,28 @@
   <p align="center">A real-time stock market platform with AI-powered insights, smart alerts, and event-driven automation.</p>
 
   <p align="center">
-    <a href="http://localhost:3000">View Demo</a> ·
-    <a href="https://github.com/yourusername/rallify/issues">Report Bug</a> ·
-    <a href="https://github.com/yourusername/rallify/issues">Request Feature</a>
+    <a href="https://rallify.app">View Demo</a> ·
+    <a href="https://github.com/DhanushChinivar/stocks_app/issues">Report Bug</a> ·
+    <a href="https://github.com/DhanushChinivar/stocks_app/issues">Request Feature</a>
   </p>
 
 </div>
 
 ---
 
-## About the Project
+## The Story
 
-Rallify is a full-stack financial platform I built to combine real-time market data with AI-driven analysis and automated workflows. Users can monitor stocks, receive intelligent price alerts, and get personalized daily digests — all powered by an event-driven backend.
+Most retail investors drown in noise too many tabs, too many tools, too much scattered data. **Rallify** was built to fix that.
 
-The project was an opportunity to work with several technologies I wanted to go deep on: Inngest for background job orchestration, Better Auth for modern authentication patterns, and the Gemini API for generating contextual market summaries.
+The idea started simple: one clean dashboard, live market data, and smart automation that works for you even when you're not watching. What grew from that became a full-stack, event-driven, AI-augmented financial platform built by one person.
 
-### Key highlights:
-- Event-driven architecture using Inngest for reliable background processing
-- Real-time stock data via Finnhub WebSocket and REST APIs
-- AI-generated market summaries and sentiment analysis via Gemini
-- Role-based access with an admin dashboard for content and user management
-- Transactional email notifications via Nodemailer
+At its core, Rallify connects to **Finnhub's API** to pull live stock prices, company profiles, financials, analyst ratings, earnings data, and market news in real time. Users can search any stock, deep-dive into a company's fundamentals, and track price movements as they happen.
+
+But live data alone wasn't enough. Users needed to act on it so **Smart Alerts** were built in. Set an upper or lower price threshold on any stock, and Rallify watches it 24/7.
+
+To make the platform truly automated, **Inngest** was wired in as the event-driven backbone. Every user signup fires a personalised welcome email. Every day at noon, Rallify fetches each user's watchlist, grabs relevant market news, runs it through **Google Gemini AI** to generate a personalised digest, and sends it out automatically, reliably, without a single cron job to manage manually.
+
+What makes Rallify interesting isn't any single feature — it's that everything talks to everything. A user signs up → welcome email fires. They add stocks to their watchlist → next morning they get an AI summary of exactly those companies. They set an alert → the system watches it and reacts.
 
 ---
 
@@ -42,27 +43,27 @@ The project was an opportunity to work with several technologies I wanted to go 
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 14 (App Router) |
+| Framework | Next.js 16 (App Router) |
 | Language | TypeScript |
 | Auth | Better Auth |
-| Database | MongoDB |
+| Database | MongoDB Atlas |
 | Styling | TailwindCSS + Shadcn UI |
 | Background Jobs | Inngest |
 | Market Data | Finnhub API |
 | AI | Google Gemini |
-| Email | Nodemailer |
+| Email | Resend |
 
 ---
 
 ## Features
 
-- **Real-Time Stock Dashboard** — Interactive line and candlestick charts with historical data. Filter stocks by industry, performance, or market cap.
-- **Smart Alerts** — Set custom thresholds for price changes or volume spikes and receive instant email notifications.
-- **Watchlist Management** — Build and manage a personalized stock watchlist.
-- **Company Insights** — Deep-dive into PE ratio, EPS, revenue trends, analyst ratings, filings, news, and sentiment scores.
-- **AI Summaries** — Daily market digests and earnings report breakdowns generated with Gemini.
-- **Admin Dashboard** — Manage stocks, publish financial news, and monitor user activity.
-- **Automated Workflows** — Inngest-powered pipelines handle price monitoring, alert scheduling, and digest delivery.
+- **Real-Time Stock Dashboard** — Live prices, candlestick charts, and market overview widgets powered by Finnhub and TradingView.
+- **Smart Alerts** — Set custom upper/lower price thresholds on any stock and get notified when triggered.
+- **Watchlist Management** — Build and manage a personalised stock watchlist with live price tracking.
+- **Company Insights** — Deep-dive into PE ratio, EPS, revenue trends, analyst ratings, news, and sentiment scores.
+- **AI Daily Digest** — Every morning, Gemini AI generates a personalised market summary based on your watchlist and emails it to you.
+- **Automated Workflows** — Inngest-powered event pipelines handle welcome emails, news summarisation, and digest delivery.
+- **Beautiful Auth Pages** — Animated landing page with live stock ticker, image carousel, and a clean sign-in/sign-up flow.
 
 ---
 
@@ -78,8 +79,8 @@ The project was an opportunity to work with several technologies I wanted to go 
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/rallify.git
-cd rallify
+git clone https://github.com/DhanushChinivar/stocks_app.git
+cd stocks_app
 
 # Install dependencies
 npm install
@@ -94,7 +95,8 @@ NODE_ENV='development'
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 # Finnhub
-NEXT_PUBLIC_NEXT_PUBLIC_FINNHUB_API_KEY=
+NEXT_PUBLIC_FINNHUB_API_KEY=
+FINNHUB_API_KEY=
 FINNHUB_BASE_URL=https://finnhub.io/api/v1
 
 # MongoDB
@@ -107,9 +109,8 @@ BETTER_AUTH_URL=http://localhost:3000
 # Gemini
 GEMINI_API_KEY=
 
-# Nodemailer
-NODEMAILER_EMAIL=
-NODEMAILER_PASSWORD=
+# Resend
+RESEND_API_KEY=
 ```
 
 You'll need accounts at:
@@ -118,6 +119,7 @@ You'll need accounts at:
 - [Finnhub](https://finnhub.io) — market data API
 - [Google AI Studio](https://aistudio.google.com/) — Gemini API key
 - [Inngest](https://www.inngest.com/) — background job dashboard
+- [Resend](https://resend.com) — transactional emails
 
 ### Running Locally
 
@@ -136,23 +138,24 @@ Visit [http://localhost:3000](http://localhost:3000) to use the app.
 ## Project Structure
 
 ```
-rallify/
+stocks_app/
 ├── app/                  # Next.js App Router pages and layouts
+│   ├── (auth)/           # Sign-in, sign-up pages and landing layout
+│   └── (root)/           # Dashboard, watchlist, stock detail pages
 ├── components/           # Reusable UI components
-├── lib/                  # Utility functions and API clients
-├── inngest/              # Inngest event functions and workflows
-├── models/               # MongoDB schemas
+├── database/             # MongoDB models and connection
+├── lib/
+│   ├── actions/          # Server actions (auth, stocks, alerts, watchlist)
+│   ├── email/            # Resend email sending and HTML templates
+│   ├── inngest/          # Inngest event functions and AI workflows
+│   └── better-auth/      # Auth configuration
+├── hooks/                # Custom React hooks
+├── types/                # Global TypeScript types
 └── public/               # Static assets
 ```
 
 ---
 
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
 ## Contact
 
-Your Name — Dhanush Chinivar (mailto:dhanushchinivar@gmail.com) · [LinkedIn](https://www.linkedin.com/in/dhanush-chinivar/) · 
+Dhanush Chinivar — [dhanushchinivar@gmail.com](mailto:dhanushchinivar@gmail.com) · [LinkedIn](https://www.linkedin.com/in/dhanush-chinivar/)
