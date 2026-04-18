@@ -211,10 +211,16 @@ declare global {
         symbol: string;
         company: string;
         alertName: string;
-        currentPrice: number;
+        currentPrice?: number;
         alertType: 'upper' | 'lower';
         threshold: number;
         changePercent?: number;
+    };
+
+    type UserForNewsEmail = {
+        id: string;
+        name: string;
+        email: string;
     };
 }
 

@@ -2,7 +2,7 @@ import {inngest} from "@/lib/inngest/client";
 
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
 import {NEWS_SUMMARY_EMAIL_PROMPT, PERSONALIZED_WELCOME_EMAIL_PROMPT} from "@/lib/inngest/prompts";
-import {sendNewsSummaryEmail, sendWelcomeEmail} from "@/lib/nodemailer";
+import {sendNewsSummaryEmail, sendWelcomeEmail} from "@/lib/email";
 import {getAllUsersForNewsEmail} from "@/lib/actions/user.actions";
 import { getWatchlistSymbolsByEmail } from "@/lib/actions/watchlist.actions";
 import { getNews } from "@/lib/actions/finnhub.actions";
@@ -88,7 +88,7 @@ export const sendDailyNewsSummary = inngest.createFunction(
         // Step #3: (placeholder) Summarize news via AI
         const userNewsSummaries: { user: User; newsContent: string | null }[] = [];
 
-        for (const { user, articles } of results) {
+        for (const { user, articles } of results as Array<{ user: UserForNewsEmail; articles: MarketNewsArticle[] }>) {
             try {
                 const prompt = NEWS_SUMMARY_EMAIL_PROMPT.replace('{{newsData}}', JSON.stringify(articles, null, 2));
 

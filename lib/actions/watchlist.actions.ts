@@ -111,7 +111,8 @@ export async function getWatchlistSymbolsByEmail(email: string): Promise<string[
         if (!db) throw new Error('MongoDB connection not found');
 
         // Better Auth stores users in the "user" collection
-        const user = await db.collection('user').findOne<{ _id?: unknown; id?: string; email?: string }>({ email });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const user = await (db.collection('user') as any).findOne({ email }) as { _id?: unknown; id?: string; email?: string } | null;
 
         if (!user) return [];
 
